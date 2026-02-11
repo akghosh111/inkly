@@ -2,6 +2,7 @@ import { RequestHandler } from "express";
 import { prisma } from "../config/db";
 import bcrypt from "bcryptjs";
 import { Role } from "../generated/enums";
+import { generateToken } from "../utils/generateToken";
 
 
 async function generateUsername(name: string) {
@@ -58,6 +59,8 @@ export const register: RequestHandler = async (req, res) => {
     },
   });
 
+  const token = generateToken(user.id, res);
+
   return res.status(201).json({
     message: "User registered successfully",
     user: {
@@ -67,6 +70,7 @@ export const register: RequestHandler = async (req, res) => {
       username: user.username,
       role: user.role,
     },
+    token,
   });
 };
 
@@ -81,7 +85,7 @@ export const login: RequestHandler = async (req, res) => {
         return res.status(401).json({error: "Invalid username or password"})
   }
 
-  // verify password
+  
 
   if (!user.passwordHash) {
     return res.status(401).json({ error: "User registered with OAuth, login with Google" });
@@ -93,12 +97,15 @@ export const login: RequestHandler = async (req, res) => {
         return res.status(401).json({error: "Invalid username or password"})
   }
 
+  const token = generateToken(user.id, res);
+
   res.status(201).json({
         status: "success",
         data: {
             id: user.id,
             email: email
         },
+        token,
     }
   )
 };
