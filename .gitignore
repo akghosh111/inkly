@@ -1,14 +1,8 @@
 .env
 node_modules/
-
-
-
-node_modules
-
-src/generated/
-prisma/migrations/
-
-
+backend/src/generated/
+backend/prisma/migrations/
 dist/
 
-dist
+backend/node_modules/
+backend/.env
