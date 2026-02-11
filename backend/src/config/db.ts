@@ -14,7 +14,7 @@ const prisma = new PrismaClient({
 });
 
 
-const connectDB= async() => {
+const connectDB = async () => {
     try {
         await prisma.$connect()
         console.log("DB Connected via Prisma")
@@ -24,7 +24,7 @@ const connectDB= async() => {
     }
 }
 
-const disconnectDB = async() => {
+const disconnectDB = async () => {
     await prisma.$disconnect()
     await pool.end()
 }

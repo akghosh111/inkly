@@ -1,6 +1,7 @@
 import express from "express"
 import { config } from "dotenv";
 import { connectDB } from "./config/db";
+import authRoutes from "./routes/authRoutes";
 
 const app = express();
 
@@ -10,6 +11,9 @@ connectDB();
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+// Routes
+app.use("/auth", authRoutes)
 
 
 
