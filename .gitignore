@@ -1,0 +1,14 @@
+.env
+node_modules/
+
+
+
+node_modules
+
+src/generated/
+prisma/migrations/
+
+
+dist/
+
+dist
