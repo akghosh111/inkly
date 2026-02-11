@@ -71,7 +71,36 @@ export const register: RequestHandler = async (req, res) => {
 };
 
 export const login: RequestHandler = async (req, res) => {
-  res.send("login");
+  const { email, password } = req.body;
+
+  const user = await prisma.user.findUnique({
+        where: {email: email},
+  })
+
+  if(!user) {
+        return res.status(401).json({error: "Invalid username or password"})
+  }
+
+  // verify password
+
+  if (!user.passwordHash) {
+    return res.status(401).json({ error: "User registered with OAuth, login with Google" });
+  }
+
+  const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
+
+  if(!isPasswordValid) {
+        return res.status(401).json({error: "Invalid username or password"})
+  }
+
+  res.status(201).json({
+        status: "success",
+        data: {
+            id: user.id,
+            email: email
+        },
+    }
+  )
 };
 
 export const logout: RequestHandler = async (req, res) => {
