@@ -111,5 +111,12 @@ export const login: RequestHandler = async (req, res) => {
 };
 
 export const logout: RequestHandler = async (req, res) => {
-  res.send("logout");
+  res.cookie("jwt", "", {
+        httpOnly: true,
+        expires: new Date(0),
+  })
+  res.status(200).json({
+        status: "success",
+        message: "Logged out successfully"
+  });
 };
